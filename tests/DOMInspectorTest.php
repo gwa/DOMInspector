@@ -58,7 +58,18 @@ class DOMInspectorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($a->hasClass('notexist'));
         $this->assertFalse($a->children(0)->hasClass('notexist'));
     }
-/*
+
+    public function testChildrenIsIterable()
+    {
+        $inspector = new DOMInspector(self::HTML_VALID_1);
+        $count = 0;
+        foreach ($inspector->children() as $key => $value) {
+            $this->assertInstanceOf('Gwa\DOM\DOMInspectorNode', $value);
+            $count++;
+        }
+        $this->assertEquals(1, $count);
+    }
+
     public function testCanCheckIfANodeContainsNodesOfAType()
     {
         $inspector = new DOMInspector(self::HTML_VALID_1);
@@ -68,5 +79,4 @@ class DOMInspectorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($inspector->contains(1, 'a'));
         $this->assertTrue($inspector->children(0)->contains(1, 'a'));
     }
-*/
 }

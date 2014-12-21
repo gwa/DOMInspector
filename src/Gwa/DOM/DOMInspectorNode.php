@@ -69,6 +69,7 @@ class DOMInspectorNode
         if (is_int($a) && is_string($b)) {
             return $this->containsNum($a, $b);
         }
+        $tagname = $a;
         foreach ($this->children() as $node) {
             if ($node->tagname() == $tagname) {
                 return true;
