@@ -1,0 +1,23 @@
+{
+    "name": "gwa/dom-inspector",
+    "description": "Provides methods for inspecting nodes in HTML markup.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Great White Ark",
+            "homepage": "http://www.greatwhiteark.com"
+        }
+    ],
+    "homepage": "https://github.com/gwa/DOMInspector",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Gwa\\DOM\\": "src/Gwa/DOM"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    }
+}
