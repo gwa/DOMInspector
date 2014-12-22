@@ -79,4 +79,11 @@ class DOMInspectorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($inspector->contains(1, 'a'));
         $this->assertTrue($inspector->children(0)->contains(1, 'a'));
     }
+
+    public function testCanFindANode()
+    {
+        $inspector = new DOMInspector(self::HTML_VALID_1);
+        $spans = $inspector->find('span');
+        $this->assertEquals(1, $spans->length());
+    }
 }

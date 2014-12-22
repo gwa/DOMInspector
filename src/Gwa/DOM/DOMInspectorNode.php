@@ -29,6 +29,32 @@ class DOMInspectorNode
     }
 
     /**
+     * @param string $selector
+     * @return DOMInspectorNodeList
+     */
+    public function find( $selector, $list = null )
+    {
+        if (!isset($list)) {
+            $list = new \Gwa\DOM\DOMInspectorNodeList($this);
+        } elseif ($this->matchesSelector($selector)) {
+            $list->add($this);
+        }
+        foreach ($this->children() as $node) {
+            $node->find($selector, $list);
+        }
+        return $list;
+    }
+
+    /**
+     * @param  string $selector
+     * @return boolean
+     */
+    public function matchesSelector( $selector )
+    {
+        return $this->tagname() == $selector;
+    }
+
+    /**
      * @return string
      */
     public function tagname()
