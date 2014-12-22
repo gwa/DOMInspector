@@ -1,12 +1,15 @@
 <?php
-namespace Gwa\DOM;
+namespace Gwa\DOMInspector;
 
-class DOMInspector extends DOMInspectorNode
+class Inspector extends Node
 {
     protected $_html;
     protected $_domdoc;
     protected $_node;
 
+    /**
+     * @param string $html
+     */
     public function __construct( $html )
     {
         $this->_html = $html;

@@ -1,22 +1,25 @@
 <?php
-namespace Gwa\DOM;
+namespace Gwa\DOMInspector;
 
-class DOMInspectorNodeList implements \Iterator
+class NodeList implements \Iterator
 {
     protected $_node;
     protected $_nodes;
     protected $_position = 0;
 
-    public function __construct( DOMInspectorNode $node = null )
+    /**
+     * @param Node
+     */
+    public function __construct( Node $node = null )
     {
         $this->_node = $node;
         $this->_nodes = array();
     }
 
     /**
-     * @param DOMInspectorNode
+     * @param Node
      */
-    public function add( DOMInspectorNode $node )
+    public function add( Node $node )
     {
     	array_push($this->_nodes, $node);
         return $this;
@@ -32,7 +35,7 @@ class DOMInspectorNodeList implements \Iterator
 
     /**
      * @param int
-     * @return DOMInspectorNode
+     * @return Node
      */
     public function get( $index )
     {

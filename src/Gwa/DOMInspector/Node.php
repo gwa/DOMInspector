@@ -1,7 +1,7 @@
 <?php
-namespace Gwa\DOM;
+namespace Gwa\DOMInspector;
 
-class DOMInspectorNode
+class Node
 {
     protected $_node;
 
@@ -13,15 +13,15 @@ class DOMInspectorNode
     }
 
     /**
-     * @return DOMInspectorNodeList
+     * @return NodeList
      */
     public function children( $index = null )
     {
         if (!isset($this->_children)) {
-            $this->_children = new \Gwa\DOM\DOMInspectorNodeList($this);
+            $this->_children = new NodeList($this);
             foreach ($this->_node->childNodes as $node) {
                 if ($node->nodeType == XML_ELEMENT_NODE) {
-                    $this->_children->add(new DOMInspectorNode($node));
+                    $this->_children->add(new Node($node));
                 }
             }
         }
@@ -30,12 +30,15 @@ class DOMInspectorNode
 
     /**
      * @param string $selector
-     * @return DOMInspectorNodeList
+     * @return NodeList
      */
     public function find( $selector, $list = null )
     {
+        if (is_string($selector)) {
+            $selector = new Selector($selector);
+        }
         if (!isset($list)) {
-            $list = new \Gwa\DOM\DOMInspectorNodeList($this);
+            $list = new NodeList($this);
         } elseif ($this->matchesSelector($selector)) {
             $list->add($this);
         }
@@ -46,12 +49,12 @@ class DOMInspectorNode
     }
 
     /**
-     * @param  string $selector
+     * @param  Selector $selector
      * @return boolean
      */
-    public function matchesSelector( $selector )
+    public function matchesSelector( Selector $selector )
     {
-        return $this->tagname() == $selector;
+        return $selector->matches($this);
     }
 
     /**
@@ -120,6 +123,9 @@ class DOMInspectorNode
         return $expectedcount == $count;
     }
 
+    /**
+     * @return \DOMNode
+     */
     public function getDOMNode()
     {
         return $this->_node;
