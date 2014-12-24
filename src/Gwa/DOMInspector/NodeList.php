@@ -34,12 +34,41 @@ class NodeList implements \Iterator
     }
 
     /**
+     * Returns a node by index.
      * @param int
      * @return Node
      */
     public function get( $index )
     {
-    	return array_key_exists($index, $this->_nodes) ? $this->_nodes[$index] : null;
+        return array_key_exists($index, $this->_nodes) ? $this->_nodes[$index] : null;
+    }
+
+    /**
+     * Returns the first node in the list.
+     * @return Node
+     */
+    public function first()
+    {
+    	return $this->get(0);
+    }
+
+    /**
+     * Returns a node by index.
+     * @param string|Selector $selector
+     * @return NodeList
+     */
+    public function filter( $selector )
+    {
+        if (is_string($selector)) {
+            $selector = new Selector($selector);
+        }
+        $list = new NodeList($this->_node);
+        foreach ($this as $node) {
+            if ($node->matches($selector)) {
+                $list->add($node);
+            }
+        }
+        return $list;
     }
 
     /* -------- Implement Iterable interface -------- */

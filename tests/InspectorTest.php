@@ -25,6 +25,15 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\DOMNode', $node);
     }
 
+    public function testCanReturnNodeHTML()
+    {
+        $inspector = new Inspector(self::HTML_PARAGRAPH);
+        $this->assertEquals(self::HTML_PARAGRAPH, $inspector->children(0)->html());
+
+        $inspector = new Inspector(self::HTML_NESTED_LIST);
+        $this->assertEquals('<li class="foo">First Item</li>', $inspector->find('li.foo')->first()->html());
+    }
+
     public function testCanReturnChildNodes()
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
@@ -66,7 +75,7 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($a->children(0)->hasClass('notexist'));
     }
 
-    public function testChildrenIsIterable()
+    public function testHasIterableChildren()
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $count = 0;
@@ -77,17 +86,33 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $count);
     }
 
-    public function testCanCheckIfANodeContainsNodesOfAType()
+    public function testCanFilterChildren()
+    {
+        $inspector = new Inspector(self::HTML_NESTED_LIST);
+        $ul = $inspector->children(0);
+        $lis = $ul->children();
+        $this->assertEquals(2, $lis->length());
+        $filtered = $lis->filter('.foo');
+        $this->assertEquals(1, $filtered->length());
+    }
+
+    public function testCanCheckIfANodeContainsNodesBySelector()
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $this->assertTrue($inspector->contains('p'));
+        $this->assertTrue($inspector->contains('p.lead'));
+        $this->assertTrue($inspector->contains('.lead'));
         $this->assertTrue($inspector->contains(1, 'p'));
+        $this->assertTrue($inspector->contains(1, 'p.lead'));
+        $this->assertTrue($inspector->contains(1, '.lead'));
+
         $this->assertFalse($inspector->contains(2, 'p'));
         $this->assertFalse($inspector->contains(1, 'a'));
+
         $this->assertTrue($inspector->children(0)->contains(1, 'a'));
     }
 
-    public function testCanFindNestedNodesByTagName()
+    public function testCanFindNestedNodesBySelector()
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $spans = $inspector->find('span');
@@ -96,5 +121,9 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $inspector = new Inspector(self::HTML_NESTED_LIST);
         $lis = $inspector->find('li');
         $this->assertEquals(3, $lis->length());
+
+        $inspector = new Inspector(self::HTML_NESTED_LIST);
+        $lis = $inspector->find('li.foo');
+        $this->assertEquals(2, $lis->length());
     }
 }
