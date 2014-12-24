@@ -39,7 +39,7 @@ class Node
         }
         if (!isset($list)) {
             $list = new NodeList($this);
-        } elseif ($this->matchesSelector($selector)) {
+        } elseif ($this->matches($selector)) {
             $list->add($this);
         }
         foreach ($this->children() as $node) {
@@ -49,20 +49,31 @@ class Node
     }
 
     /**
+     * Tests whether the node matches the selector passed.
      * @param  Selector $selector
      * @return boolean
      */
-    public function matchesSelector( Selector $selector )
+    public function matches( Selector $selector )
     {
         return $selector->matches($this);
     }
 
     /**
+     * Returns the HTML "tag" of the node
      * @return string
      */
     public function tagname()
     {
         return $this->_node->nodeName;
+    }
+
+    /**
+     * Returns the normalized ID attribute of the node
+     * @return string
+     */
+    public function id()
+    {
+        return $this->attr('id');
     }
 
     /**

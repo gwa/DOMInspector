@@ -3,7 +3,7 @@ use Gwa\DOMInspector\Inspector;
 
 class InspectorTest extends PHPUnit_Framework_TestCase
 {
-    const HTML_PARAGRAPH = '<p class="lead">This is a test node <a href="#" class="btn btn-primary">with a <span>link</span></a></p>';
+    const HTML_PARAGRAPH = '<p class="lead" id="my-paragraph">This is a test node <a href="#" class="btn btn-primary">with a <span>link</span></a></p>';
     const HTML_NESTED_LIST = '<ul><li class="foo">First Item</li><li>Second Item<ul><li class="foo">Nested Item</li></ul></li></ul>';
 
     public function testCanBeConstructed()
@@ -48,6 +48,12 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $this->assertEquals('lead', $inspector->children(0)->attr('class'));
         $this->assertNull($inspector->children(0)->attr('notexist'));
+    }
+
+    public function testCanReturnTheNodeId()
+    {
+        $inspector = new Inspector(self::HTML_PARAGRAPH);
+        $this->assertEquals('my-paragraph', $inspector->children(0)->id());
     }
 
     public function testCanCheckIfANodeHasAClass()
