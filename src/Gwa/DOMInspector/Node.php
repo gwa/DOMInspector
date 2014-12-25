@@ -103,12 +103,21 @@ class Node
     }
 
     /**
-     * Return the (trimmed) node HTML as a string.
+     * Returns the (trimmed) node HTML as a string.
      * @return string
      */
     public function html()
     {
         return trim($this->getDOMNode()->ownerDocument->saveHTML($this->getDOMNode()));
+    }
+
+    /**
+     * Returns the text value of the node.
+     * @return string
+     */
+    public function text()
+    {
+        return $this->getDOMNode()->nodeValue;
     }
 
     /**

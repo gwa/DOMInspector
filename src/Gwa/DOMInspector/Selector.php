@@ -43,7 +43,7 @@ class Selector
 
     private function parseTagName( $selector )
     {
-        $pattern = '/^[a-z]+/';
+        $pattern = '/^[a-z1-6]+/';
         if (preg_match($pattern, $selector, $match)) {
             $this->_tagname = $match[0];
         }

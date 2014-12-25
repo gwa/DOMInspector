@@ -126,4 +126,23 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $lis = $inspector->find('li.foo');
         $this->assertEquals(2, $lis->length());
     }
+
+    public function testCanInspectAFullHtmlPage()
+    {
+        $markup = file_get_contents(__DIR__.'/fixtures/html5.html');
+        $inspector = new Inspector($markup);
+        $this->assertEquals('html', $inspector->getDoctype());
+
+        // get the title
+        $title = $inspector->document()->find('head')->first()->find('title')->first()->text();
+        $this->assertEquals('HTML 5 Test Page', $title);
+
+        // get the charset
+        $charset = $inspector->document()->find('head')->first()->find('meta')->first()->attr('charset');
+        $this->assertEquals('utf-8', $charset);
+
+        // get the H1 text
+        $h1 = $inspector->find('h1')->first()->text();
+        $this->assertEquals($h1, $title);
+    }
 }
