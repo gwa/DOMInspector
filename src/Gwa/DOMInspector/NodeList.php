@@ -28,7 +28,7 @@ class NodeList implements \Iterator
     /**
      * @return int
      */
-    public function length()
+    public function count()
     {
         return count($this->_nodes);
     }

@@ -39,7 +39,7 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $children = $inspector->children();
         $this->assertInstanceOf('Gwa\DOMInspector\NodeList', $children);
-        $this->assertEquals(1, $children->length());
+        $this->assertEquals(1, $children->count());
 
         $this->assertInstanceOf('Gwa\DOMInspector\Node', $children->get(0));
         $this->assertNull($children->get(1));
@@ -91,9 +91,9 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $inspector = new Inspector(self::HTML_NESTED_LIST);
         $ul = $inspector->children(0);
         $lis = $ul->children();
-        $this->assertEquals(2, $lis->length());
+        $this->assertEquals(2, $lis->count());
         $filtered = $lis->filter('.foo');
-        $this->assertEquals(1, $filtered->length());
+        $this->assertEquals(1, $filtered->count());
     }
 
     public function testCanCheckIfANodeContainsNodesBySelector()
@@ -116,15 +116,15 @@ class InspectorTest extends PHPUnit_Framework_TestCase
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
         $spans = $inspector->find('span');
-        $this->assertEquals(1, $spans->length());
+        $this->assertEquals(1, $spans->count());
 
         $inspector = new Inspector(self::HTML_NESTED_LIST);
         $lis = $inspector->find('li');
-        $this->assertEquals(3, $lis->length());
+        $this->assertEquals(3, $lis->count());
 
         $inspector = new Inspector(self::HTML_NESTED_LIST);
         $lis = $inspector->find('li.foo');
-        $this->assertEquals(2, $lis->length());
+        $this->assertEquals(2, $lis->count());
     }
 
     public function testCanInspectAFullHtmlPage()
@@ -144,5 +144,30 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         // get the H1 text
         $h1 = $inspector->find('h1')->first()->text();
         $this->assertEquals($h1, $title);
+    }
+
+    /* ---- Select example test ---- */
+
+    public function testExampleWorks()
+    {
+        $markup = file_get_contents(__DIR__.'/fixtures/fruit-select.html');
+        $inspector = new Inspector($markup);
+
+        // Test that there is one node
+        $this->assertEquals(1, $inspector->children()->count());
+        $select = $inspector->children()->get(0);
+
+        // Test the tagname of the first node
+        $this->assertEquals('select', $select->tagname());
+
+        // Test that the select has the class `big`
+        $this->assertTrue($select->hasClass('big'));
+
+        // Test the `name` attribute value
+        $this->assertEquals('fruit', $select->attr('name'));
+
+
+        $this->assertTrue($select->contains(4, 'option'));
+        $this->assertEquals(4, $select->children()->count());
     }
 }
