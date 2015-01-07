@@ -9,9 +9,6 @@
         }
     ],
     "homepage": "https://github.com/gwa/DOMInspector",
-    "require": {
-
-    },
     "autoload": {
         "psr-4": {
             "Gwa\\DOMInspector\\": "src/Gwa/DOMInspector"
