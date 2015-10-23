@@ -1,6 +1,10 @@
 DOMInspector
 ============
 
+PHP >= 5.4
+
+[![Build Status](https://travis-ci.org/gwa/DOMInspector.svg?branch=contains-refactoring)](https://travis-ci.org/gwa/DOMInspector)
+
 The DOMInspector provides PHP methods for traversing and inspecting nodes in HTML markup.
 
 ## Example Usage
