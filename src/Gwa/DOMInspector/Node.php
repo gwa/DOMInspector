@@ -7,6 +7,9 @@ class Node
 
     protected $_children;
 
+    /**
+     * @param \DOMNode $node
+     */
     public function __construct(\DOMNode $node)
     {
         $this->_node = $node;
@@ -40,26 +43,33 @@ class Node
     }
 
     /**
-     * Returns a NodeList containing all child nodes that match selector.
+     * Returns a NodeList containing all child nodes that match the selector.
      *
      * @param string|Selector $selector
-     * @param NodeList $list used internally for recursion
      * @return NodeList
      */
-    public function find($selector, $list = null)
+    public function find($selector)
     {
         if (is_string($selector)) {
             $selector = new Selector($selector);
         }
 
-        if (!isset($list)) {
-            $list = new NodeList($this);
-        } elseif ($this->matches($selector)) {
+        return $this->doFind($selector, new NodeList($this));
+    }
+
+    /**
+     * @param Selector $selector
+     * @param NodeList $list
+     * @return NodeList
+     */
+    protected function doFind(Selector $selector, $list)
+    {
+        if ($this->matches($selector)) {
             $list->add($this);
         }
 
         foreach ($this->children() as $node) {
-            $node->find($selector, $list);
+            $node->doFind($selector, $list);
         }
 
         return $list;
@@ -137,6 +147,7 @@ class Node
         if (!$this->_node->hasAttribute('class')) {
             return false;
         }
+
         $classes = explode(' ', $this->_node->getAttribute('class'));
         return in_array($cssclass, $classes);
     }
@@ -149,17 +160,7 @@ class Node
      */
     public function contains($selector)
     {
-        if (is_string($selector)) {
-            $selector = new Selector($selector);
-        }
-
-        foreach ($this->children() as $node) {
-            if ($node->matches($selector)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getContainsCount($selector) > 0;
     }
 
     /**
@@ -172,6 +173,15 @@ class Node
      */
     public function containsNum($expectedcount, $selector)
     {
+        return $expectedcount === $this->getContainsCount($selector);
+    }
+
+    /**
+     * @param string $selector
+     * @return integer
+     */
+    private function getContainsCount($selector)
+    {
         if (is_string($selector)) {
             $selector = new Selector($selector);
         }
@@ -183,7 +193,7 @@ class Node
             }
         }
 
-        return $expectedcount === $count;
+        return $count;
     }
 
     /**
