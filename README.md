@@ -5,7 +5,7 @@ PHP >= 5.4
 
 [![Latest Stable Version](https://poser.pugx.org/gwa/dom-inspector/v/stable)](https://packagist.org/packages/gwa/dom-inspector) [![Total Downloads](https://poser.pugx.org/gwa/dom-inspector/downloads)](https://packagist.org/packages/gwa/dom-inspector) [![Latest Unstable Version](https://poser.pugx.org/gwa/dom-inspector/v/unstable)](https://packagist.org/packages/gwa/dom-inspector) [![License](https://poser.pugx.org/gwa/dom-inspector/license)](https://packagist.org/packages/gwa/dom-inspector)
 
-[![Build Status](https://travis-ci.org/gwa/DOMInspector.svg?branch=contains-refactoring)](https://travis-ci.org/gwa/DOMInspector)
+[![Build Status](https://travis-ci.org/gwa/DOMInspector.svg?branch=contains-refactoring)](https://travis-ci.org/gwa/DOMInspector) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gwa/DOMInspector/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gwa/DOMInspector/?branch=master)
 
 The DOMInspector provides PHP methods for traversing and inspecting nodes in HTML markup.
 
