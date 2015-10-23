@@ -10,16 +10,16 @@ class NodeList implements \Iterator
     /**
      * @param Node
      */
-    public function __construct( Node $node = null )
+    public function __construct(Node $node = null)
     {
         $this->_node = $node;
-        $this->_nodes = array();
+        $this->_nodes = [];
     }
 
     /**
      * @param Node
      */
-    public function add( Node $node )
+    public function add(Node $node)
     {
     	array_push($this->_nodes, $node);
         return $this;
@@ -35,16 +35,18 @@ class NodeList implements \Iterator
 
     /**
      * Returns a node by index.
+     *
      * @param int
      * @return Node
      */
-    public function get( $index )
+    public function get($index)
     {
         return array_key_exists($index, $this->_nodes) ? $this->_nodes[$index] : null;
     }
 
     /**
      * Returns the first node in the list.
+     *
      * @return Node
      */
     public function first()
@@ -53,16 +55,29 @@ class NodeList implements \Iterator
     }
 
     /**
-     * Returns a node by index.
+     * Returns the last node in the list.
+     *
+     * @return Node
+     */
+    public function last()
+    {
+    	return $this->get(count($this->_nodes) - 1);
+    }
+
+    /**
+     * Returns a new NodeList created by filtering this list by $selector.
+     *
      * @param string|Selector $selector
      * @return NodeList
      */
-    public function filter( $selector )
+    public function filter($selector)
     {
         if (is_string($selector)) {
             $selector = new Selector($selector);
         }
+
         $list = new NodeList($this->_node);
+
         foreach ($this as $node) {
             if ($node->matches($selector)) {
                 $list->add($node);

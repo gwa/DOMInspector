@@ -26,7 +26,7 @@ class Selector
     /**
      * @param string $selector
      */
-    public function __construct( $selector )
+    public function __construct($selector)
     {
         $this->_selector = $selector;
         $this->parseSelector($selector);
@@ -34,14 +34,14 @@ class Selector
 
     /* ---- Parsing ---- */
 
-    private function parseSelector( $selector )
+    private function parseSelector($selector)
     {
         $this->parseTagName($selector);
         $this->parseId($selector);
         $this->parseClasses($selector);
     }
 
-    private function parseTagName( $selector )
+    private function parseTagName($selector)
     {
         $pattern = '/^[a-z1-6]+/';
         if (preg_match($pattern, $selector, $match)) {
@@ -49,7 +49,7 @@ class Selector
         }
     }
 
-    private function parseId( $selector )
+    private function parseId($selector)
     {
         $pattern = '/#([\-_A-Za-z0-9]+)/';
         if (preg_match($pattern, $selector, $match)) {
@@ -57,7 +57,7 @@ class Selector
         }
     }
 
-    private function parseClasses( $selector )
+    private function parseClasses($selector)
     {
         $pattern = '/\.([\-_A-Za-z0-9]+)/';
         if (preg_match_all($pattern, $selector, $matches)) {

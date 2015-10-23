@@ -11,7 +11,7 @@ class Inspector extends Node
     /**
      * @param string $html
      */
-    public function __construct( $html )
+    public function __construct($html)
     {
         $this->_html = $html;
         $this->_domdoc = new \DOMDocument();
@@ -33,6 +33,7 @@ class Inspector extends Node
 
     /**
      * Returns a node representing the entire document.
+     *
      * @return Node
      */
     public function document()

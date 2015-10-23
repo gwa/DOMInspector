@@ -7,16 +7,17 @@ class Node
 
     protected $_children;
 
-    public function __construct( \DOMNode $node )
+    public function __construct(\DOMNode $node)
     {
         $this->_node = $node;
     }
 
     /**
      * Returns a NodeList containing the child nodes of this node.
+     *
      * @return NodeList
      */
-    public function children( $index = null )
+    public function children($index = null)
     {
         if (!isset($this->_children)) {
             $this->parseChildren();
@@ -30,6 +31,7 @@ class Node
     private function parseChildren()
     {
         $this->_children = new NodeList($this);
+
         foreach ($this->_node->childNodes as $node) {
             if ($node->nodeType === XML_ELEMENT_NODE) {
                 $this->_children->add(new Node($node));
@@ -38,11 +40,13 @@ class Node
     }
 
     /**
+     * Returns a NodeList containing all child nodes that match selector.
+     *
      * @param string|Selector $selector
      * @param NodeList $list used internally for recursion
      * @return NodeList
      */
-    public function find( $selector, $list = null )
+    public function find($selector, $list = null)
     {
         if (is_string($selector)) {
             $selector = new Selector($selector);
@@ -63,10 +67,11 @@ class Node
 
     /**
      * Tests whether the node matches the selector passed.
+     *
      * @param  Selector $selector
      * @return boolean
      */
-    public function matches( Selector $selector )
+    public function matches(Selector $selector)
     {
         return $selector->matches($this);
     }
@@ -93,9 +98,9 @@ class Node
      * Returns the value of the attribute with the name passed.
      * Returns NULL if attribute is not set.
      *
-     * @return string
+     * @return string|null
      */
-    public function attr( $attr )
+    public function attr($attr)
     {
         return $this->_node->hasAttribute($attr) ?
             $this->_node->getAttribute($attr) :
@@ -104,6 +109,7 @@ class Node
 
     /**
      * Returns the (trimmed) node HTML as a string.
+     *
      * @return string
      */
     public function html()
@@ -113,6 +119,7 @@ class Node
 
     /**
      * Returns the text value of the node.
+     *
      * @return string
      */
     public function text()
@@ -122,9 +129,10 @@ class Node
 
     /**
      * Asserts whether the node has the CSS class passed.
+     *
      * @return boolean
      */
-    public function hasClass( $cssclass )
+    public function hasClass($cssclass)
     {
         if (!$this->_node->hasAttribute('class')) {
             return false;
@@ -135,17 +143,15 @@ class Node
 
     /**
      * Asserts whether this node contains child nodes by selector.
-     * @param int|string $a
-     * @param string|NULL $b
+     *
+     * @param string $selector
      * @return boolean
      */
-    public function contains( $a, $b = null )
+    public function contains($selector)
     {
-        if (is_int($a) && is_string($b)) {
-            return $this->containsNum($a, $b);
+        if (is_string($selector)) {
+            $selector = new Selector($selector);
         }
-
-        $selector = new Selector($a);
 
         foreach ($this->children() as $node) {
             if ($node->matches($selector)) {
@@ -164,7 +170,7 @@ class Node
      * @param string|Selector $selector
      * @return boolean
      */
-    public function containsNum( $expectedcount, $selector )
+    public function containsNum($expectedcount, $selector)
     {
         if (is_string($selector)) {
             $selector = new Selector($selector);
@@ -177,11 +183,35 @@ class Node
             }
         }
 
-        return $expectedcount == $count;
+        return $expectedcount === $count;
+    }
+
+    /**
+     * Asserts whether this node or its children contains nodes by selector.
+     *
+     * @param string $selector
+     * @return boolean
+     */
+    public function containsDeep($selector)
+    {
+        return $this->find($selector)->count() > 0;
+    }
+
+    /**
+     * Asserts whether this node or its children contains a certain number of nodes by selector.
+     *
+     * @param int $expectedcount
+     * @param string $selector
+     * @return boolean
+     */
+    public function containsNumDeep($expectedcount, $selector)
+    {
+        return $this->find($selector)->count() === $expectedcount;
     }
 
     /**
      * Returns the actual \DOMNode instance.
+     *
      * @return \DOMNode
      */
     public function getDOMNode()

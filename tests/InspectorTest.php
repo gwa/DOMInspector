@@ -102,14 +102,14 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($inspector->contains('p'));
         $this->assertTrue($inspector->contains('p.lead'));
         $this->assertTrue($inspector->contains('.lead'));
-        $this->assertTrue($inspector->contains(1, 'p'));
-        $this->assertTrue($inspector->contains(1, 'p.lead'));
-        $this->assertTrue($inspector->contains(1, '.lead'));
+        $this->assertTrue($inspector->containsNum(1, 'p'));
+        $this->assertTrue($inspector->containsNum(1, 'p.lead'));
+        $this->assertTrue($inspector->containsNum(1, '.lead'));
 
-        $this->assertFalse($inspector->contains(2, 'p'));
-        $this->assertFalse($inspector->contains(1, 'a'));
+        $this->assertFalse($inspector->containsNum(2, 'p'));
+        $this->assertFalse($inspector->containsNum(1, 'a'));
 
-        $this->assertTrue($inspector->children(0)->contains(1, 'a'));
+        $this->assertTrue($inspector->children(0)->containsNum(1, 'a'));
     }
 
     public function testCanFindNestedNodesBySelector()
@@ -144,6 +144,11 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         // get the H1 text
         $h1 = $inspector->find('h1')->first()->text();
         $this->assertEquals($h1, $title);
+
+        // contains p.lead
+        $this->assertFalse($inspector->contains('li.new'));
+        $this->assertTrue($inspector->containsDeep('li.new'));
+        $this->assertTrue($inspector->containsNumDeep(10, 'li'));
     }
 
     /* ---- Select example test ---- */
@@ -167,7 +172,7 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('fruit', $select->attr('name'));
 
 
-        $this->assertTrue($select->contains(4, 'option'));
+        $this->assertTrue($select->containsNum(4, 'option'));
         $this->assertEquals(4, $select->children()->count());
     }
 }
