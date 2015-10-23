@@ -177,7 +177,7 @@ class Node
     }
 
     /**
-     * @param string $selector
+     * @param string|Selector $selector
      * @return integer
      */
     private function getContainsCount($selector)
@@ -199,7 +199,7 @@ class Node
     /**
      * Asserts whether this node or its children contains nodes by selector.
      *
-     * @param string $selector
+     * @param string|Selector $selector
      * @return boolean
      */
     public function containsDeep($selector)
@@ -211,7 +211,7 @@ class Node
      * Asserts whether this node or its children contains a certain number of nodes by selector.
      *
      * @param int $expectedcount
-     * @param string $selector
+     * @param string|Selector $selector
      * @return boolean
      */
     public function containsNumDeep($expectedcount, $selector)
