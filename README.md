@@ -6,8 +6,6 @@ The DOMInspector provides PHP methods for traversing and inspecting nodes in HTM
 ## Example Usage
 
 ~~~~php
-use Gwa\Dom\Inspector;
-
 // Get HTML markup from some component in your application.
 // Here we are using a (ficticious) class that represents an HTML select.
 
@@ -42,7 +40,7 @@ In our unit tests we want to inspect the structure of the rendered HTML.
 
 ~~~~php
 // Create an Inspector instance, passing the markup.
-$inspector = new Gwa\Dom\Inspector($markup);
+$inspector = new Gwa\DOMInspector\Inspector($markup);
 ~~~~
 
 The inspector represents a node that contains the nodes in the markup passed into it.
