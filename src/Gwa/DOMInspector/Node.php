@@ -17,22 +17,32 @@ class Node
 
     /**
      * Returns a NodeList containing the child nodes of this node.
+     * Optionally filtered by index or selector.
      *
+     * @param int|string|null $selector
      * @return NodeList
      */
-    public function children($index = null)
+    public function children($selector = null)
     {
-        if (!isset($this->_children)) {
-            $this->parseChildren();
+        $children = $this->getParsedChildren();
+
+        if (is_int($selector)) {
+            return $children->get($selector);
         }
 
-        return is_null($index) ?
-            $this->_children :
-            $this->_children->get($index);
+        if (is_string($selector)) {
+            return $children->filter($selector);
+        }
+
+        return $children;
     }
 
-    private function parseChildren()
+    private function getParsedChildren()
     {
+        if (isset($this->_children)) {
+            return $this->_children;
+        }
+
         $this->_children = new NodeList($this);
 
         foreach ($this->_node->childNodes as $node) {
@@ -40,6 +50,8 @@ class Node
                 $this->_children->add(new Node($node));
             }
         }
+
+        return $this->_children;
     }
 
     /**
@@ -134,11 +146,11 @@ class Node
      */
     public function text()
     {
-        return $this->getDOMNode()->nodeValue;
+        return (new NodeTextExtractor($this->getDOMNode()))->extract();
     }
 
     /**
-     * Asserts whether the node has the CSS class passed.
+     * Asserts whether the node has a CSS class.
      *
      * @return boolean
      */

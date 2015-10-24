@@ -16,7 +16,12 @@ class Inspector extends Node
         $this->_html = $html;
         $this->_domdoc = new \DOMDocument();
         $this->_domdoc->preserveWhiteSpace = false;
+
+        // Suppress error for HTML5
+        // http://stackoverflow.com/a/6090728/698511
+        libxml_use_internal_errors(true);
         $this->_domdoc->loadHTML($html);
+
         $this->_node = $this->_domdoc->getElementsByTagName('body')->item(0);
     }
 
