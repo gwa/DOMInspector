@@ -88,9 +88,20 @@ tag#id.classname
 
 Returns a `NodeList` containing all child nodes that match the selector.
 
-#### `children($index = null) NodeList`
+#### `children($selector = null) NodeList`
 
-Returns a `NodeList` containing all _direct child_ nodes, or a single `Node` if an index is specified.
+Returns a `NodeList` containing all _direct child_ nodes, or a single `Node` if an numeric index is specified, or filtered nodes if a selector string is passed.
+
+```php
+// return NodeList containing all LIs
+$inspector->find('ul')->children();
+
+// return NodeList containing second LI
+$inspector->find('ul')->children(1);
+
+// return NodeList containing all LIs with class 'active'
+$inspector->find('ul')->children('.active');
+```
 
 #### `tagname() string`
 
@@ -107,6 +118,40 @@ Returns the value of an attribute of the node.
 #### `html() string`
 
 Returns the "outer" HTML value of the node.
+
+#### `text() string`
+
+Returns the text value of the node.
+
+For complex text, structure (`p` and `br`) is maintained. For example with the following markup
+
+```markup
+<article>
+    <p>
+        This is some <strong>text</strong> with <em>inline styles</em>
+        and a <a href="http://www.example.com">link</a>.<BR/>
+        With a line break.
+    </p>
+    <p>
+        A second paragraph.
+    </p>
+</article>
+```
+
+the `text` method
+
+```php
+$inspector->children('article')->first()->text();
+```
+
+returns
+
+```
+This is some text with inline styles and a link.
+With a line break.
+
+A second paragraph.
+```
 
 #### `hasClass($cssclass) boolean`
 

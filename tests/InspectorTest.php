@@ -34,6 +34,21 @@ class InspectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<li class="foo">First Item</li>', $inspector->find('li.foo')->first()->html());
     }
 
+    public function testCanReturnNodeText()
+    {
+        $inspector = new Inspector(self::HTML_NESTED_LIST);
+        $this->assertEquals('First Item', $inspector->find('li.foo')->first()->text());
+    }
+
+    public function testCanReturnComplexNodeText()
+    {
+        $markup = file_get_contents(__DIR__.'/fixtures/styled-text.html');
+        $expected = trim(file_get_contents(__DIR__.'/expected/styled-text.txt'));
+
+        $inspector = new Inspector($markup);
+        $this->assertEquals($expected, $inspector->children('article')->first()->text());
+    }
+
     public function testCanReturnChildNodes()
     {
         $inspector = new Inspector(self::HTML_PARAGRAPH);
