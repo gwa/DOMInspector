@@ -88,27 +88,27 @@ class NodeList implements \Iterator
 
     /* -------- Implement Iterable interface -------- */
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->_position = 0;
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->_nodes[$this->_position];
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->_position;
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->_position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return array_key_exists($this->_position, $this->_nodes);
     }
